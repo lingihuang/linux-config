@@ -36,7 +36,6 @@ EDITOR='vim'
    (( count = $count + 1 ))
     done
     PR_NO_COLOR="%{$terminfo[sgr0]%}"
-PS1="[$PR_MAGENTA%n$PR_NO_COLOR@$PR_GREEN%U%m%u$PR_NO_COLOR:$PR_RED%2c$PR_NO_COLOR]%(!.#.$) "
 RPS1="$PR_MAGENTA(%D{%m-%d %H:%M})$PR_NO_COLOR"
 LC_ALL='en_US.UTF-8'
 LANG='en_US.UTF-8'
@@ -157,17 +156,18 @@ alias goconf="cd /etc/httpd/conf.d/"
 alias gophpcs="cd /usr/share/pear/PHP/CodeSniffer";
 alias restart="sudo /etc/init.d/httpd restart"
 alias gowww="cd ~/miiicasa/"
-alias cdstatic="cd ~/miiicasa/static/";
+alias cdst="cd ~/miiicasa/static";
 alias cdwww="cd ~/miiicasa/"
 alias gostatic="cd ~/miiicasa/static";
-alias nodejs="~/miiicasa/comet/node.js restart";
+alias genlang="cd ~/;php ~/miiicasa/cms/cli.php l10n/lang/script_gen;cd -;";
+alias gendoc="/home/$USER/miiicasa/lib/yuidocjs/lib/cli.js -o ~/public_html/yuidocjs/ .";
 
 # Environment Variables.
 export TZ="/usr/share/zoneinfo/Asia/Taipei"
 export MAVEN_HOME=/home/m/lib/maven
-export PATH="/usr/local/bin:/usr/local/sbin/:/bin:/sbin:/usr/bin:/usr/sbin:${PATH}"
-export PATH="${MAVEN_HOME}/bin:/usr/local/maven/bin:${PATH}"
+export PATH="/usr/local/bin:/usr/local/sbin/:/bin:/sbin:/usr/bin:/usr/sbin:/home/{$USER}/bin:${PATH}"
 export PATH="/home/dev/${USER}/miiicasa/lib:/home/dev/${USER}/miiicasa/bin:${PATH}"
+export PATH="/opt/flex/bin:/opt/fdbuild:${PATH}"
 
 # get the name of the branch we are on
 git_prompt_info() {
@@ -177,5 +177,16 @@ git_prompt_info() {
 autoload -U colors
 colors
 setopt prompt_subst
-PROMPT='%{$fg[green]%}%n@%m %~ %{$fg[red]%}$(git_prompt_info)%{$reset_color%} %# '
 
+export DEV_ROOT=/home/dev/${USER}/
+export SITE_ENV=develop
+source ~/.git-completion
+
+export GIT_PS1_SHOWDIRTYSTATE=true
+export GIT_PS1_SHOWSTASHSTATE=true
+export GIT_PS1_SHOWUNTRACKEDFILES=true
+PS1='%{$fg[green]%}%n@%m %{$fg[cyan]%}%~ %{$fg[red]%}$(__git_ps1 "(%s)")%{$reset_color%}
+% > '
+#PS1='%{$fg[green]%}%n@%m %~ %{$fg[red]%}$(__git_ps1 "(%s)")%{$reset_color%} %# '
+#PS1='[%n@%m %c$(__git_ps1 " (%s)")]\$ '
+eval $(keychain --eval --agents ssh -Q --quiet id_rsa)
