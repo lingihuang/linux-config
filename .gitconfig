@@ -38,3 +38,8 @@
 
 [http]
     sslverify = false
+[user]
+        name = Vivian Huang
+        email = vivian_huang@miiicasa.com
+[push]
+        default = tracking
